@@ -2,10 +2,16 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven'
+        maven 'Maven'   // Use your configured Maven tool name
     }
 
     stages {
+
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/nithyaravi8198-tech/jenkins-maven-demo.git'
+            }
+        }
 
         stage('Build') {
             steps {
@@ -15,7 +21,7 @@ pipeline {
 
         stage('Archive') {
             steps {
-                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
             }
         }
     }
