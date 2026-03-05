@@ -2,16 +2,10 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven'   // Use your configured Maven tool name
+        maven 'Maven'
     }
 
     stages {
-
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/nithyaravi8198-tech/jenkins-maven-demo.git'
-            }
-        }
 
         stage('Build') {
             steps {
@@ -21,8 +15,17 @@ pipeline {
 
         stage('Archive') {
             steps {
-                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
             }
+        }
+    }
+
+    post {
+        success {
+            slackSend message: "Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
+        }
+        failure {
+            slackSend message: "Build FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
         }
     }
 }
