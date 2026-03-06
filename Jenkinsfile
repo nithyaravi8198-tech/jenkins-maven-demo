@@ -1,13 +1,3 @@
-
-at the **top and bottom** of the file.
-
----
-
-# Correct Jenkinsfile (copy exactly)
-
-Use this **clean version**:
-
-```groovy
 pipeline {
     agent any
 
@@ -32,7 +22,6 @@ pipeline {
     }
 
     post {
-
         success {
             withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_WEBHOOK')]) {
                 sh """
@@ -52,6 +41,5 @@ pipeline {
                 """
             }
         }
-
     }
 }
