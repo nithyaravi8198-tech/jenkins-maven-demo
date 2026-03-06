@@ -6,7 +6,6 @@ pipeline {
     }
 
     stages {
-
         stage('Build') {
             steps {
                 sh 'mvn clean package'
@@ -22,10 +21,11 @@ pipeline {
 
     post {
         success {
-            slackSend message: "Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
-        }
-        failure {
-            slackSend message: "Build FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
+            sh '''
+            curl -X POST -H 'Content-type: application/json' \
+            --data '{"text":"Jenkins Build SUCCESS: ${JOB_NAME} #${BUILD_NUMBER}"}' \
+            https://hooks.slack.com/services/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
+            '''
         }
     }
 }
